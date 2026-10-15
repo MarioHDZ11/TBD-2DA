@@ -1,0 +1,282 @@
+MySQL Shell 26.7.1
+
+Copyright (c) 2016, 2026, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  SQL > \connect root@localhost
+Creating a session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 9
+Server version: 8.0.46 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > create t2;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 't2' at line 1
+ MySQL  localhost:3306 ssl  SQL > create databese t2;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'databese t2' at line 1
+ MySQL  localhost:3306 ssl  SQL > create database t2;
+Query OK, 1 row affected (0.0321 sec)
+ MySQL  localhost:3306 ssl  SQL > show database;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| t1                 |
+| t2                 |
+| tbd_exa1           |
++--------------------+
+7 rows in set (0.0050 sec)
+ MySQL  localhost:3306 ssl  SQL > use t2
+Default schema set to `t2`.
+Fetching global names, object names from `t2` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  t2  SQL > create table tablaA(
+                                   -> id int, nombre varchar(1));
+Query OK, 0 rows affected (0.1331 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > create table tablaB( id int, nombre varchar(1));
+Query OK, 0 rows affected (0.0418 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > show tables;
++--------------+
+| Tables_in_t2 |
++--------------+
+| tablaa       |
+| tablab       |
++--------------+
+2 rows in set (0.0233 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > desc tablaA;
++--------+------------+------+-----+---------+-------+
+| Field  | Type       | Null | Key | Default | Extra |
++--------+------------+------+-----+---------+-------+
+| id     | int        | YES  |     | NULL    |       |
+| nombre | varchar(1) | YES  |     | NULL    |       |
++--------+------------+------+-----+---------+-------+
+2 rows in set (0.0051 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > desc tablaB;
++--------+------------+------+-----+---------+-------+
+| Field  | Type       | Null | Key | Default | Extra |
++--------+------------+------+-----+---------+-------+
+| id     | int        | YES  |     | NULL    |       |
+| nombre | varchar(1) | YES  |     | NULL    |       |
++--------+------------+------+-----+---------+-------+
+2 rows in set (0.0177 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into tablaA
+                                   -> values(1,'A'),(2,'B'),(3,'C'),(4,'D');
+Query OK, 4 rows affected (0.0110 sec)
+
+Records: 4  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > insert into tablaB
+                                   -> values(1,'X'),(2,'Y'),(3,'Z'),(4,'A'),(5,'B');
+Query OK, 5 rows affected (0.0104 sec)
+
+Records: 5  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tablab;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | X      |
+|  2 | Y      |
+|  3 | Z      |
+|  4 | A      |
+|  5 | B      |
++----+--------+
+5 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tablaa;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
++----+--------+
+4 rows in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tablaa
+                                   -> union
+                                   -> select * from tablab;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
+|  3 | C      |
+|  4 | D      |
+|  1 | X      |
+|  2 | Y      |
+|  3 | Z      |
+|  4 | A      |
+|  5 | B      |
++----+--------+
+9 rows in set (0.0273 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tablaa select * from tablab
+                                   -> ^C
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tablaa
+                                   -> where nombre in (select nombre from tablab);
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
++----+--------+
+2 rows in set (0.0039 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into tablab
+                                   -> value(6,'A');
+Query OK, 1 row affected (0.0084 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tablaa where nombre in (select nombre from tablab);
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
++----+--------+
+2 rows in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tablab;
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | X      |
+|  2 | Y      |
+|  3 | Z      |
+|  4 | A      |
+|  5 | B      |
+|  6 | A      |
++----+--------+
+6 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select distinct nombre from tablab;
++--------+
+| nombre |
++--------+
+| X      |
+| Y      |
+| Z      |
+| A      |
+| B      |
++--------+
+5 rows in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tablaa where nombre in (select distinct nombre from tablab);
++----+--------+
+| id | nombre |
++----+--------+
+|  1 | A      |
+|  2 | B      |
++----+--------+
+2 rows in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tablaa where nombre not int (select distinct nombre from tablab);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'int (select distinct nombre from tablab)' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tablaa where nombre not in (select distinct nombre from tablab);
++----+--------+
+| id | nombre |
++----+--------+
+|  3 | C      |
+|  4 | D      |
++----+--------+
+2 rows in set (0.0038 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from tablaa, tablab;
++----+--------+----+--------+
+| id | nombre | id | nombre |
++----+--------+----+--------+
+|  4 | D      |  1 | X      |
+|  3 | C      |  1 | X      |
+|  2 | B      |  1 | X      |
+|  1 | A      |  1 | X      |
+|  4 | D      |  2 | Y      |
+|  3 | C      |  2 | Y      |
+|  2 | B      |  2 | Y      |
+|  1 | A      |  2 | Y      |
+|  4 | D      |  3 | Z      |
+|  3 | C      |  3 | Z      |
+|  2 | B      |  3 | Z      |
+|  1 | A      |  3 | Z      |
+|  4 | D      |  4 | A      |
+|  3 | C      |  4 | A      |
+|  2 | B      |  4 | A      |
+|  1 | A      |  4 | A      |
+|  4 | D      |  5 | B      |
+|  3 | C      |  5 | B      |
+|  2 | B      |  5 | B      |
+|  1 | A      |  5 | B      |
+|  4 | D      |  6 | A      |
+|  3 | C      |  6 | A      |
+|  2 | B      |  6 | A      |
+|  1 | A      |  6 | A      |
++----+--------+----+--------+
+24 rows in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select count(*) from tablab;
++----------+
+| count(*) |
++----------+
+|        6 |
++----------+
+1 row in set (0.0170 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select nombre,nombre from tablaa, tablab;
+ERROR: 1052 (23000): Column 'nombre' in field list is ambiguous
+ MySQL  localhost:3306 ssl  t2  SQL > select tablaa.nombre, tablab.nombre from tablaa, tablab;
++--------+--------+
+| nombre | nombre |
++--------+--------+
+| D      | X      |
+| C      | X      |
+| B      | X      |
+| A      | X      |
+| D      | Y      |
+| C      | Y      |
+| B      | Y      |
+| A      | Y      |
+| D      | Z      |
+| C      | Z      |
+| B      | Z      |
+| A      | Z      |
+| D      | A      |
+| C      | A      |
+| B      | A      |
+| A      | A      |
+| D      | B      |
+| C      | B      |
+| B      | B      |
+| A      | B      |
+| D      | A      |
+| C      | A      |
+| B      | A      |
+| A      | A      |
++--------+--------+
+24 rows in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select a.nombre, b.nombre
+                                   -> from tablaa a, tablab;
+ERROR: 1054 (42S22): Unknown column 'b.nombre' in 'field list'
+ MySQL  localhost:3306 ssl  t2  SQL > select a.nombre, b.nombre from tablaa a, tablab b;
++--------+--------+
+| nombre | nombre |
++--------+--------+
+| D      | X      |
+| C      | X      |
+| B      | X      |
+| A      | X      |
+| D      | Y      |
+| C      | Y      |
+| B      | Y      |
+| A      | Y      |
+| D      | Z      |
+| C      | Z      |
+| B      | Z      |
+| A      | Z      |
+| D      | A      |
+| C      | A      |
+| B      | A      |
+| A      | A      |
+| D      | B      |
+| C      | B      |
+| B      | B      |
+| A      | B      |
+| D      | A      |
+| C      | A      |
+| B      | A      |
+| A      | A      |
++--------+--------+
+24 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > use sakila;
+MySQL Error 1049: Unknown database 'sakila'
+(i-search)`':
