@@ -1,0 +1,468 @@
+MySQL Shell 26.7.1
+
+Copyright (c) 2016, 2026, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  SQL >
+ MySQL  SQL > \connect root@localhost
+Creating a session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 8
+Server version: 8.0.46 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > use t2
+Default schema set to `t2`.
+Fetching global names, object names from `t2` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++------------+---------+-----------+------------+
+| id_cliente | nombre  | apellidos | fecha_nac  |
++------------+---------+-----------+------------+
+|          1 | Juan    | Perez     | 1999-03-03 |
+|          2 | Pedro   | Paramo    | 1999-07-12 |
+|          3 | Juan    | Rulfo     | 1979-05-05 |
+|          4 | Adriana | Gonzales  | 1999-07-12 |
++------------+---------+-----------+------------+
+4 rows in set (0.0258 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++----------+------------+-------------+
+| id_venta | id_cliente | fecha_venta |
++----------+------------+-------------+
+|        1 |          1 | 2026-10-13  |
+|        2 |          4 | 2026-10-13  |
++----------+------------+-------------+
+2 rows in set (0.0141 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > show create table venta;
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                                                                                                                                                                                                 |
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| venta | CREATE TABLE `venta` (
+  `id_venta` int NOT NULL AUTO_INCREMENT,
+  `id_cliente` int NOT NULL,
+  `fecha_venta` date DEFAULT NULL,
+  PRIMARY KEY (`id_venta`),
+  KEY `fk_cliente` (`id_cliente`),
+  CONSTRAINT `fk_cliente` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id_cliente`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++-------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.0019 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > alter table venta
+                                   -> drop constraint fk_cliente;
+Query OK, 0 rows affected (0.0349 sec)
+
+Records: 0  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > alter table venta
+                                   -> add foreing key id_cliente
+                                   -> references cliente(id_cliente)
+                                   -> on delete cascade
+                                   -> on update cascade;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'key id_cliente
+references cliente(id_cliente)
+on delete cascade
+on update cascad' at line 2
+ MySQL  localhost:3306 ssl  t2  SQL > desc cliente;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id_cliente | int         | NO   | PRI | NULL    | auto_increment |
+| nombre     | varchar(50) | NO   |     | NULL    |                |
+| apellidos  | varchar(50) | NO   |     | NULL    |                |
+| fecha_nac  | date        | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0047 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > alter table venta add foreing key(id_cliente) references cliente(id_cliente) on delete cascade on update cascade;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'key(id_cliente) references cliente(id_cliente) on delete cascade on update casca' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > alter table venta add foreing key(id_cliente) references cliente(id_cliente) on delete cascade on update cascade;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'key(id_cliente) references cliente(id_cliente) on delete cascade on update casca' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > ALTER TABLE venta ADD FOREIGN KEY (id_cliente) REFERENCES cliente(id_cliente) ON DELETE CASCADE ON UPDATE CASCADE;
+Query OK, 2 rows affected (0.1591 sec)
+
+Records: 2  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++------------+---------+-----------+------------+
+| id_cliente | nombre  | apellidos | fecha_nac  |
++------------+---------+-----------+------------+
+|          1 | Juan    | Perez     | 1999-03-03 |
+|          2 | Pedro   | Paramo    | 1999-07-12 |
+|          3 | Juan    | Rulfo     | 1979-05-05 |
+|          4 | Adriana | Gonzales  | 1999-07-12 |
++------------+---------+-----------+------------+
+4 rows in set (0.0018 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > delete from cliente
+                                   -> where id_cliente 1;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '1' at line 2
+ MySQL  localhost:3306 ssl  t2  SQL > delete from cliente where id_cliente = 1;
+Query OK, 1 row affected (0.0107 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++----------+------------+-------------+
+| id_venta | id_cliente | fecha_venta |
++----------+------------+-------------+
+|        2 |          4 | 2026-10-13  |
++----------+------------+-------------+
+1 row in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > update cliente
+                                   -> set id_cliente = 5
+                                   -> where id_cliente = 4;
+Query OK, 1 row affected (0.0111 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++----------+------------+-------------+
+| id_venta | id_cliente | fecha_venta |
++----------+------------+-------------+
+|        2 |          5 | 2026-10-13  |
++----------+------------+-------------+
+1 row in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++------------+---------+-----------+------------+
+| id_cliente | nombre  | apellidos | fecha_nac  |
++------------+---------+-----------+------------+
+|          2 | Pedro   | Paramo    | 1999-07-12 |
+|          3 | Juan    | Rulfo     | 1979-05-05 |
+|          5 | Adriana | Gonzales  | 1999-07-12 |
++------------+---------+-----------+------------+
+3 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > create table producto(
+                                   -> id_producto int not null key auto_increment,
+                                   -> nombre varchar(50) not null,
+                                   -> precio double not null,
+                                   -> undad varchar(10) not null);
+Query OK, 0 rows affected (0.0280 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > desc table producto;
++----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------+
+| id | select_type | table    | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra |
++----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------+
+|  1 | SIMPLE      | producto | NULL       | ALL  | NULL          | NULL | NULL    | NULL |    1 |      100 | NULL  |
++----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------+
+1 row in set, 1 warning (0.0060 sec)
+Note (code 1003): /* select#1 */ select `t2`.`producto`.`id_producto` AS `id_producto`,`t2`.`producto`.`nombre` AS `nombre`,`t2`.`producto`.`precio` AS `precio`,`t2`.`producto`.`undad` AS `undad` from `t2`.`producto`
+ MySQL  localhost:3306 ssl  t2  SQL > desc producto;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| id_producto | int         | NO   | PRI | NULL    | auto_increment |
+| nombre      | varchar(50) | NO   |     | NULL    |                |
+| precio      | double      | NO   |     | NULL    |                |
+| undad       | varchar(10) | NO   |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0047 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into producto(nombre, precio, unidad)
+                                   -> values("Playera",5000,"Pieza"),
+                                   -> ("pantalon",2000,"Pieza"),
+                                   -> ("short",3000,"Pieza");
+ERROR: 1054 (42S22): Unknown column 'unidad' in 'field list'
+ MySQL  localhost:3306 ssl  t2  SQL > insert into producto(nombre, precio, undad) values("Playera",5000,"Pieza"), ("pantalon",2000,"Pieza"), ("short",3000,"Pieza");
+Query OK, 3 rows affected (0.0091 sec)
+
+Records: 3  Duplicates: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > select * from producto;
++-------------+----------+--------+-------+
+| id_producto | nombre   | precio | undad |
++-------------+----------+--------+-------+
+|           1 | Playera  |   5000 | Pieza |
+|           2 | pantalon |   2000 | Pieza |
+|           3 | short    |   3000 | Pieza |
++-------------+----------+--------+-------+
+3 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > create table venta_detalle(
+                                   -> id_venta_det int not null key auto_increment,
+                                   -> id_venta int not null,
+                                   -> id_producto int not null,
+                                   -> cantidad int not null,
+                                   -> foreign key(id_venta) references venta(id_venta)
+                                   -> on update cascade
+                                   -> on delete cascade,
+                                   -> foreign key(id_producto) refences producto(id_producto)
+                                   -> on update cascade
+                                   -> on delete cascade);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'refences producto(id_producto)
+on update cascade
+on delete cascade)' at line 9
+ MySQL  localhost:3306 ssl  t2  SQL > desc producto;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| id_producto | int         | NO   | PRI | NULL    | auto_increment |
+| nombre      | varchar(50) | NO   |     | NULL    |                |
+| precio      | double      | NO   |     | NULL    |                |
+| undad       | varchar(10) | NO   |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.0020 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > create table venta_detalle( id_venta_det int not null key auto_increment, id_venta int not null, id_producto int not null, cantidad int not null, foreign key(id_venta) references venta(id_venta) on update cascade on delete cascade, foreign key(id_producto) refences producto(id_producto) on update cascade on delete cascade);
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'refences producto(id_producto) on update cascade on delete cascade)' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > ^C
+ MySQL  localhost:3306 ssl  t2  SQL > create table venta_detalle (
+                                   ->     id_venta_det int not null auto_increment,
+                                   ->     id_venta int not null,
+                                   ->     id_producto int not null,
+                                   ->     cantidad int not null,
+                                   ->     primary key (id_venta_det),
+                                   ->     foreign key (id_venta) references venta(id_venta) on update cascade on delete cascade,
+                                   ->     foreign key (id_producto) references producto(id_producto) on update cascade on delete cascade
+                                   -> );
+
+Query OK, 0 rows affected (0.1291 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++----------+------------+-------------+
+| id_venta | id_cliente | fecha_venta |
++----------+------------+-------------+
+|        2 |          5 | 2026-10-13  |
++----------+------------+-------------+
+1 row in set (0.0016 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta(id_cliente, fecha_venta)
+                                   -> value(2,"2026-10-10");
+Query OK, 1 row affected (0.0085 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta(id_cliente, fecha_venta) value(3,"2026-10-10");
+Query OK, 1 row affected (0.0094 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++----------+------------+-------------+
+| id_venta | id_cliente | fecha_venta |
++----------+------------+-------------+
+|        2 |          5 | 2026-10-13  |
+|        4 |          2 | 2026-10-10  |
+|        5 |          3 | 2026-10-10  |
++----------+------------+-------------+
+3 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > desc venta_detalle;
++--------------+------+------+-----+---------+----------------+
+| Field        | Type | Null | Key | Default | Extra          |
++--------------+------+------+-----+---------+----------------+
+| id_venta_det | int  | NO   | PRI | NULL    | auto_increment |
+| id_venta     | int  | NO   | MUL | NULL    |                |
+| id_producto  | int  | NO   | MUL | NULL    |                |
+| cantidad     | int  | NO   |     | NULL    |                |
++--------------+------+------+-----+---------+----------------+
+4 rows in set (0.0022 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta_detalle(id_venta, id_producto, cantidad)
+                                   -> value(2,2,10);
+Query OK, 1 row affected (0.0058 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta_detalle(id_venta, id_producto, cantidad) value(3,3,1);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`t2`.`venta_detalle`, CONSTRAINT `venta_detalle_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`) ON DELETE CASCADE ON UPDATE CASCADE)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta_detalle(id_venta, id_producto, cantidad) value(3,4,1);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`t2`.`venta_detalle`, CONSTRAINT `venta_detalle_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`) ON DELETE CASCADE ON UPDATE CASCADE)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta_detalle(id_venta, id_producto, cantidad) value(5,5,1);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`t2`.`venta_detalle`, CONSTRAINT `venta_detalle_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`) ON DELETE CASCADE ON UPDATE CASCADE)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta_detalle(id_venta, id_producto, cantidad) values
+                                   -> (4,1,10),(4,2,3),(4,3,20)
+                                   -> ,(5,1,12),(6,2,20),(6,4,10);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`t2`.`venta_detalle`, CONSTRAINT `venta_detalle_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`) ON DELETE CASCADE ON UPDATE CASCADE)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta_detalle(id_venta, id_producto, cantidad) value(3,2,10);
+error: 1452 (23000): cannot add or update a child row: a foreign key constraint fails (`t2`.`venta_detalle`, constraint `venta_detalle_ibfk_1` foreign key (`id_venta`) references `venta` (`id_venta`) on delete cascade on update cascade)
+ MySQL  localhost:3306 ssl  t2  SQL > show tables;
++---------------+
+| Tables_in_t2  |
++---------------+
+| cliente       |
+| producto      |
+| tablaa        |
+| tablab        |
+| venta         |
+| venta_detalle |
++---------------+
+6 rows in set (0.0017 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++------------+---------+-----------+------------+
+| id_cliente | nombre  | apellidos | fecha_nac  |
++------------+---------+-----------+------------+
+|          2 | Pedro   | Paramo    | 1999-07-12 |
+|          3 | Juan    | Rulfo     | 1979-05-05 |
+|          5 | Adriana | Gonzales  | 1999-07-12 |
++------------+---------+-----------+------------+
+3 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from producto;
++-------------+----------+--------+-------+
+| id_producto | nombre   | precio | undad |
++-------------+----------+--------+-------+
+|           1 | Playera  |   5000 | Pieza |
+|           2 | pantalon |   2000 | Pieza |
+|           3 | short    |   3000 | Pieza |
++-------------+----------+--------+-------+
+3 rows in set (0.0017 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++----------+------------+-------------+
+| id_venta | id_cliente | fecha_venta |
++----------+------------+-------------+
+|        2 |          5 | 2026-10-13  |
+|        4 |          2 | 2026-10-10  |
+|        5 |          3 | 2026-10-10  |
++----------+------------+-------------+
+3 rows in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle;
++--------------+----------+-------------+----------+
+| id_venta_det | id_venta | id_producto | cantidad |
++--------------+----------+-------------+----------+
+|            1 |        2 |           2 |       10 |
++--------------+----------+-------------+----------+
+1 row in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta_detalle(id_venta, id_producto, cantidad) value(1,4,10);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`t2`.`venta_detalle`, CONSTRAINT `venta_detalle_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`) ON DELETE CASCADE ON UPDATE CASCADE)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta_detalle(id_venta, id_producto, cantidad) value(4,1,10);
+Query OK, 1 row affected (0.0085 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta_detalle(id_venta, id_producto, cantidad) value(4,1,1006);
+Query OK, 1 row affected (0.0050 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta_detalle(id_venta, id_producto, cantidad) value(4,2,36);
+Query OK, 1 row affected (0.0088 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta_detalle(id_venta, id_producto, cantidad) value(4,1,36);
+Query OK, 1 row affected (0.0080 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta_detalle(id_venta, id_producto, cantidad) value(4,3,6);
+Query OK, 1 row affected (0.0043 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle;
++--------------+----------+-------------+----------+
+| id_venta_det | id_venta | id_producto | cantidad |
++--------------+----------+-------------+----------+
+|            1 |        2 |           2 |       10 |
+|           13 |        4 |           1 |       10 |
+|           14 |        4 |           1 |     1006 |
+|           15 |        4 |           2 |       36 |
+|           16 |        4 |           1 |       36 |
+|           17 |        4 |           3 |        6 |
++--------------+----------+-------------+----------+
+6 rows in set (0.0008 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta_detalle(id_venta, id_producto, cantidad) value(5,3,16);
+Query OK, 1 row affected (0.0086 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle;
++--------------+----------+-------------+----------+
+| id_venta_det | id_venta | id_producto | cantidad |
++--------------+----------+-------------+----------+
+|            1 |        2 |           2 |       10 |
+|           13 |        4 |           1 |       10 |
+|           14 |        4 |           1 |     1006 |
+|           15 |        4 |           2 |       36 |
+|           16 |        4 |           1 |       36 |
+|           17 |        4 |           3 |        6 |
+|           18 |        5 |           3 |       16 |
++--------------+----------+-------------+----------+
+7 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta
+                                   -> where id_cliente = 2;
++----------+------------+-------------+
+| id_venta | id_cliente | fecha_venta |
++----------+------------+-------------+
+|        4 |          2 | 2026-10-10  |
++----------+------------+-------------+
+1 row in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle where id_cliente = 5;
+ERROR: 1054 (42S22): Unknown column 'id_cliente' in 'where clause'
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle
+                                   -> where id_venta = 5;
++--------------+----------+-------------+----------+
+| id_venta_det | id_venta | id_producto | cantidad |
++--------------+----------+-------------+----------+
+|           18 |        5 |           3 |       16 |
++--------------+----------+-------------+----------+
+1 row in set (0.0009 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > delete from cliente = where id_cliente = 2;
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= where id_cliente = 2' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > delete from cliente where id_cliente = 2;
+Query OK, 1 row affected (0.0089 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++------------+---------+-----------+------------+
+| id_cliente | nombre  | apellidos | fecha_nac  |
++------------+---------+-----------+------------+
+|          3 | Juan    | Rulfo     | 1979-05-05 |
+|          5 | Adriana | Gonzales  | 1999-07-12 |
++------------+---------+-----------+------------+
+2 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle;
++--------------+----------+-------------+----------+
+| id_venta_det | id_venta | id_producto | cantidad |
++--------------+----------+-------------+----------+
+|            1 |        2 |           2 |       10 |
+|           18 |        5 |           3 |       16 |
++--------------+----------+-------------+----------+
+2 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++----------+------------+-------------+
+| id_venta | id_cliente | fecha_venta |
++----------+------------+-------------+
+|        2 |          5 | 2026-10-13  |
+|        5 |          3 | 2026-10-10  |
++----------+------------+-------------+
+2 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > update cliente
+                                   -> set id_cliente = 3
+                                   -> where id_cliente = 1;
+Query OK, 0 rows affected (0.0007 sec)
+
+Rows matched: 0  Changed: 0  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++----------+------------+-------------+
+| id_venta | id_cliente | fecha_venta |
++----------+------------+-------------+
+|        2 |          5 | 2026-10-13  |
+|        5 |          3 | 2026-10-10  |
++----------+------------+-------------+
+2 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++------------+---------+-----------+------------+
+| id_cliente | nombre  | apellidos | fecha_nac  |
++------------+---------+-----------+------------+
+|          3 | Juan    | Rulfo     | 1979-05-05 |
+|          5 | Adriana | Gonzales  | 1999-07-12 |
++------------+---------+-----------+------------+
+2 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > update cliente set id_cliente = 1 where id_cliente = 3;
+Query OK, 1 row affected (0.0085 sec)
+
+Rows matched: 1  Changed: 1  Warnings: 0
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++------------+---------+-----------+------------+
+| id_cliente | nombre  | apellidos | fecha_nac  |
++------------+---------+-----------+------------+
+|          1 | Juan    | Rulfo     | 1979-05-05 |
+|          5 | Adriana | Gonzales  | 1999-07-12 |
++------------+---------+-----------+------------+
+2 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle;
++--------------+----------+-------------+----------+
+| id_venta_det | id_venta | id_producto | cantidad |
++--------------+----------+-------------+----------+
+|            1 |        2 |           2 |       10 |
+|           18 |        5 |           3 |       16 |
++--------------+----------+-------------+----------+
+2 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from producto;
++-------------+----------+--------+-------+
+| id_producto | nombre   | precio | undad |
++-------------+----------+--------+-------+
+|           1 | Playera  |   5000 | Pieza |
+|           2 | pantalon |   2000 | Pieza |
+|           3 | short    |   3000 | Pieza |
++-------------+----------+--------+-------+
+3 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > delete from producto
+                                   -> where nombre = "short";
+Query OK, 1 row affected (0.0086 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from producto;
++-------------+----------+--------+-------+
+| id_producto | nombre   | precio | undad |
++-------------+----------+--------+-------+
+|           1 | Playera  |   5000 | Pieza |
+|           2 | pantalon |   2000 | Pieza |
++-------------+----------+--------+-------+
+2 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle;
++--------------+----------+-------------+----------+
+| id_venta_det | id_venta | id_producto | cantidad |
++--------------+----------+-------------+----------+
+|            1 |        2 |           2 |       10 |
++--------------+----------+-------------+----------+
+1 row in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++----------+------------+-------------+
+| id_venta | id_cliente | fecha_venta |
++----------+------------+-------------+
+|        2 |          5 | 2026-10-13  |
+|        5 |          1 | 2026-10-10  |
++----------+------------+-------------+
+2 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from producto;
++-------------+----------+--------+-------+
+| id_producto | nombre   | precio | undad |
++-------------+----------+--------+-------+
+|           1 | Playera  |   5000 | Pieza |
+|           2 | pantalon |   2000 | Pieza |
++-------------+----------+--------+-------+
+2 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL >
