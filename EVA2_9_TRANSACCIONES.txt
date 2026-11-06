@@ -1,0 +1,378 @@
+MySQL Shell 26.7.1
+
+Copyright (c) 2016, 2026, Oracle and/or its affiliates.
+Oracle is a registered trademark of Oracle Corporation and/or its affiliates.
+Other names may be trademarks of their respective owners.
+
+Type '\help' or '\?' for help; '\quit' to exit.
+ MySQL  SQL > \connect root@localhost
+Creating a session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 20
+Server version: 8.0.46 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > create role 'supervisores';
+Query OK, 0 rows affected (0.0151 sec)
+ MySQL  localhost:3306 ssl  SQL > grant select on t1.empleado to 'supervisores';
+Query OK, 0 rows affected (0.0098 sec)
+ MySQL  localhost:3306 ssl  SQL > create user 'prueba4'@'localhost' identified by "qwerty";
+Query OK, 0 rows affected (0.0146 sec)
+ MySQL  localhost:3306 ssl  SQL > grant 'supervisores' to 'prueba4'@'localhost';
+Query OK, 0 rows affected (0.0089 sec)
+ MySQL  localhost:3306 ssl  SQL > \disconnect
+ MySQL  SQL > \connect prueba4@localhost
+Creating a session to 'prueba4@localhost'
+Please provide the password for 'prueba4@localhost': ******
+Save password for 'prueba4@localhost'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching global names for auto-completion... Press ^C to stop.
+Error during auto-completion cache update: Access denied; you need (at least one of) the PROCESS privilege(s) for this operation
+Your MySQL connection id is 21
+Server version: 8.0.46 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| performance_schema |
++--------------------+
+2 rows in set (0.0015 sec)
+ MySQL  localhost:3306 ssl  SQL > \disconnect
+ MySQL  SQL > \connect root@localhost
+Creating a session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 22
+Server version: 8.0.46 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > \disconnect
+ MySQL  SQL > \connect root@localhost
+Creating a session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 23
+Server version: 8.0.46 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > \disconnect
+ MySQL  SQL > \connect prueba4@localhost
+Creating a session to 'prueba4@localhost'
+Please provide the password for 'prueba4@localhost': ******
+Save password for 'prueba4@localhost'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching global names for auto-completion... Press ^C to stop.
+Error during auto-completion cache update: Access denied; you need (at least one of) the PROCESS privilege(s) for this operation
+Your MySQL connection id is 24
+Server version: 8.0.46 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > \disconnect
+ MySQL  SQL > \connect root@localhost
+Creating a session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 25
+Server version: 8.0.46 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > create role 'administrativos'@'localhost';
+Query OK, 0 rows affected (0.0107 sec)
+ MySQL  localhost:3306 ssl  SQL > grant select on t1.empleado to 'prueba4'@'localhost';
+Query OK, 0 rows affected (0.0084 sec)
+ MySQL  localhost:3306 ssl  SQL > \disconnect
+ MySQL  SQL > \connect prueba4@localhost
+Creating a session to 'prueba4@localhost'
+Please provide the password for 'prueba4@localhost': ******
+Save password for 'prueba4@localhost'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching global names for auto-completion... Press ^C to stop.
+Error during auto-completion cache update: Access denied; you need (at least one of) the PROCESS privilege(s) for this operation
+Your MySQL connection id is 26
+Server version: 8.0.46 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| performance_schema |
+| t1                 |
++--------------------+
+3 rows in set (0.0012 sec)
+ MySQL  localhost:3306 ssl  SQL > use t1;
+Default schema set to `t1`.
+Fetching global names, object names from `t1` for auto-completion... Press ^C to stop.
+Error during auto-completion cache update: Access denied; you need (at least one of) the PROCESS privilege(s) for this operation
+ MySQL  localhost:3306 ssl  t1  SQL > show tables;
++--------------+
+| Tables_in_t1 |
++--------------+
+| empleado     |
++--------------+
+1 row in set (0.0022 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > select * from empleado;
++-------------+--------+-----------+---------+
+| id_empleado | nombre | apellidos | salario |
++-------------+--------+-----------+---------+
+|           1 | Luis   | Rascon    |    3.00 |
++-------------+--------+-----------+---------+
+1 row in set (0.0014 sec)
+ MySQL  localhost:3306 ssl  t1  SQL > \disconnect
+ MySQL  SQL > \connect root@localhost
+Creating a session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 27
+Server version: 8.0.46 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > grant select on t1.empleado to 'administrativos'@'localhost';
+Query OK, 0 rows affected (0.0075 sec)
+ MySQL  localhost:3306 ssl  SQL > create user 'prueba5'@'localhost';
+Query OK, 0 rows affected (0.0095 sec)
+ MySQL  localhost:3306 ssl  SQL > grant 'administrativos'@'localhost' to 'prueba5'@'localhost';
+Query OK, 0 rows affected (0.0089 sec)
+ MySQL  localhost:3306 ssl  SQL > \disconnect
+ MySQL  SQL > \connect prueba5@localhost;
+Creating a session to 'prueba5@localhost;'
+Please provide the password for 'prueba5@localhost;': ******
+MySQL Error 2005 (HY000): Unknown MySQL server host 'localhost;' (11001)
+ MySQL  SQL > \connect prueba5@localhost
+Creating a session to 'prueba5@localhost'
+Please provide the password for 'prueba5@localhost':
+Save password for 'prueba5@localhost'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching global names for auto-completion... Press ^C to stop.
+Error during auto-completion cache update: Access denied; you need (at least one of) the PROCESS privilege(s) for this operation
+Your MySQL connection id is 28
+Server version: 8.0.46 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| performance_schema |
++--------------------+
+2 rows in set (0.0014 sec)
+ MySQL  localhost:3306 ssl  SQL > show VARIABLES like 'actrivate_all_roles_on_login';
+Empty set, 1 warning (0.0075 sec)
+Warning (code 1366): Incorrect string value: '\xE1ndar ...' for column 'VARIABLE_VALUE' at row 1
+ MySQL  localhost:3306 ssl  SQL > show VARIABLES like 'activate_all_roles_on_login';
++-----------------------------+-------+
+| Variable_name               | Value |
++-----------------------------+-------+
+| activate_all_roles_on_login | OFF   |
++-----------------------------+-------+
+1 row in set, 1 warning (0.0021 sec)
+Warning (code 1366): Incorrect string value: '\xE1ndar ...' for column 'VARIABLE_VALUE' at row 1
+ MySQL  localhost:3306 ssl  SQL > set global activate_all_roles_on_login = ON;
+ERROR: 1227 (42000): Access denied; you need (at least one of) the SUPER or SYSTEM_VARIABLES_ADMIN privilege(s) for this operation
+ MySQL  localhost:3306 ssl  SQL > set global activate_all_roles_on_login = ON;
+ERROR: 1227 (42000): Access denied; you need (at least one of) the SUPER or SYSTEM_VARIABLES_ADMIN privilege(s) for this operation
+ MySQL  localhost:3306 ssl  SQL > \disconnect
+ MySQL  SQL > \connect root@localhost
+Creating a session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 29
+Server version: 8.0.46 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > set global activate_all_roles_on_login = ON;
+Query OK, 0 rows affected (0.0005 sec)
+ MySQL  localhost:3306 ssl  SQL > \disconnect
+ MySQL  SQL > \connect prueba5@localhost
+Creating a session to 'prueba5@localhost'
+Please provide the password for 'prueba5@localhost':
+Save password for 'prueba5@localhost'? [Y]es/[N]o/Ne[v]er (default No): n
+Fetching global names for auto-completion... Press ^C to stop.
+Error during auto-completion cache update: Access denied; you need (at least one of) the PROCESS privilege(s) for this operation
+Your MySQL connection id is 30
+Server version: 8.0.46 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| performance_schema |
+| t1                 |
++--------------------+
+3 rows in set (0.0013 sec)
+ MySQL  localhost:3306 ssl  SQL > \disconnect
+ MySQL  SQL > \connect root@localhost
+Creating a session to 'root@localhost'
+Fetching global names for auto-completion... Press ^C to stop.
+Your MySQL connection id is 31
+Server version: 8.0.46 MySQL Community Server - GPL
+No default schema selected; type \use <schema> to set one.
+ MySQL  localhost:3306 ssl  SQL > show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| t1                 |
+| t1_copia           |
+| t2                 |
+| tbd_exa1           |
++--------------------+
+9 rows in set (0.0013 sec)
+ MySQL  localhost:3306 ssl  SQL > use t2;
+Default schema set to `t2`.
+Fetching global names, object names from `t2` for auto-completion... Press ^C to stop.
+ MySQL  localhost:3306 ssl  t2  SQL > show tables;
++---------------+
+| Tables_in_t2  |
++---------------+
+| carrera       |
+| cliente       |
+| cliente_com   |
+| comida        |
+| estudiantes   |
+| producto      |
+| tablaa        |
+| tablab        |
+| venta         |
+| venta_detalle |
++---------------+
+10 rows in set (0.0016 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > desc venta;
++-------------+------+------+-----+---------+----------------+
+| Field       | Type | Null | Key | Default | Extra          |
++-------------+------+------+-----+---------+----------------+
+| id_venta    | int  | NO   | PRI | NULL    | auto_increment |
+| id_cliente  | int  | NO   | MUL | NULL    |                |
+| fecha_venta | date | YES  |     | NULL    |                |
++-------------+------+------+-----+---------+----------------+
+3 rows in set (0.0030 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++------------+---------+-----------+------------+
+| id_cliente | nombre  | apellidos | fecha_nac  |
++------------+---------+-----------+------------+
+|          1 | Juan    | Rulfo     | 1979-05-05 |
+|          5 | Adriana | Gonzales  | 1999-07-12 |
+|          7 | paco    | Toño      | 1999-03-03 |
++------------+---------+-----------+------------+
+3 rows in set (0.0082 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++----------+------------+-------------+
+| id_venta | id_cliente | fecha_venta |
++----------+------------+-------------+
+|        2 |          5 | 2026-10-13  |
+|        5 |          1 | 2026-10-10  |
++----------+------------+-------------+
+2 rows in set (0.0047 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from producto;
++-------------+----------+--------+-------+
+| id_producto | nombre   | precio | undad |
++-------------+----------+--------+-------+
+|           1 | Playera  |   5000 | Pieza |
+|           2 | pantalon |   2000 | Pieza |
+|           3 | short    |   1000 | pieza |
++-------------+----------+--------+-------+
+3 rows in set (0.0050 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle;
++--------------+----------+-------------+----------+
+| id_venta_det | id_venta | id_producto | cantidad |
++--------------+----------+-------------+----------+
+|            1 |        2 |           2 |       10 |
++--------------+----------+-------------+----------+
+1 row in set (0.0047 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > insert inot venta(id_cliente, fecha_venta)
+                                   -> value(5,"2026-11-05");
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'venta(id_cliente, fecha_venta)
+value(5,"2026-11-05")' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > insert inot venta(id_cliente, fecha_venta) value(5,"2026-11-05");
+ERROR: 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'venta(id_cliente, fecha_venta) value(5,"2026-11-05")' at line 1
+ MySQL  localhost:3306 ssl  t2  SQL > insert into venta(id_cliente, fecha_venta) value(5,"2026-11-05");
+Query OK, 1 row affected (0.0095 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++----------+------------+-------------+
+| id_venta | id_cliente | fecha_venta |
++----------+------------+-------------+
+|        2 |          5 | 2026-10-13  |
+|        5 |          1 | 2026-10-10  |
+|        6 |          5 | 2026-11-05  |
++----------+------------+-------------+
+3 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta_detalle
+                                   -> where id_venta = 6;
+Empty set (0.0034 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > start transaction;
+Query OK, 0 rows affected (0.0004 sec)
+ MySQL  localhost:3306 ssl  t2  ★  SQL > insert into venta()
+                                      ->
+                                      -> ^C
+ MySQL  localhost:3306 ssl  t2  ★  SQL > insert into venta(id_cliente, fecha_venta)
+                                      -> value(7, "2026-11-05");
+Query OK, 1 row affected (0.0042 sec)
+ MySQL  localhost:3306 ssl  t2  ★  SQL > insert into venta_detalle(id_venta, id_producto, cantidad)
+                                      -> value(10,1,4);
+ERROR: 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`t2`.`venta_detalle`, CONSTRAINT `venta_detalle_ibfk_1` FOREIGN KEY (`id_venta`) REFERENCES `venta` (`id_venta`) ON DELETE CASCADE ON UPDATE CASCADE)
+ MySQL  localhost:3306 ssl  t2  ★  SQL > rollback;
+Query OK, 0 rows affected (0.0058 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from venta;
++----------+------------+-------------+
+| id_venta | id_cliente | fecha_venta |
++----------+------------+-------------+
+|        2 |          5 | 2026-10-13  |
+|        5 |          1 | 2026-10-10  |
+|        6 |          5 | 2026-11-05  |
++----------+------------+-------------+
+3 rows in set (0.0034 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > start transaction;
+Query OK, 0 rows affected (0.0004 sec)
+ MySQL  localhost:3306 ssl  t2  ★  SQL > select * from cliente;
++------------+---------+-----------+------------+
+| id_cliente | nombre  | apellidos | fecha_nac  |
++------------+---------+-----------+------------+
+|          1 | Juan    | Rulfo     | 1979-05-05 |
+|          5 | Adriana | Gonzales  | 1999-07-12 |
+|          7 | paco    | Toño      | 1999-03-03 |
++------------+---------+-----------+------------+
+3 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  ★  SQL > insert into cliente(nombre, apellidos, fecha_nac)
+                                      -> value("Ale","Carmona","2020-02-02");
+Query OK, 1 row affected (0.0035 sec)
+ MySQL  localhost:3306 ssl  t2  ★  SQL > select * from cliente;
++------------+---------+-----------+------------+
+| id_cliente | nombre  | apellidos | fecha_nac  |
++------------+---------+-----------+------------+
+|          1 | Juan    | Rulfo     | 1979-05-05 |
+|          5 | Adriana | Gonzales  | 1999-07-12 |
+|          7 | paco    | Toño      | 1999-03-03 |
+|          8 | Ale     | Carmona   | 2020-02-02 |
++------------+---------+-----------+------------+
+4 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  ★  SQL > commit;
+Query OK, 0 rows affected (0.0069 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++------------+---------+-----------+------------+
+| id_cliente | nombre  | apellidos | fecha_nac  |
++------------+---------+-----------+------------+
+|          1 | Juan    | Rulfo     | 1979-05-05 |
+|          5 | Adriana | Gonzales  | 1999-07-12 |
+|          7 | paco    | Toño      | 1999-03-03 |
+|          8 | Ale     | Carmona   | 2020-02-02 |
++------------+---------+-----------+------------+
+4 rows in set (0.0007 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > start transaction;
+Query OK, 0 rows affected (0.0004 sec)
+ MySQL  localhost:3306 ssl  t2  ★  SQL > insert into cliente(nombre, apellidos, fecha_nac) value("Ale","Carmona","2020-02-02");
+Query OK, 1 row affected (0.0033 sec)
+ MySQL  localhost:3306 ssl  t2  ★  SQL > select * from cliente;
++------------+---------+-----------+------------+
+| id_cliente | nombre  | apellidos | fecha_nac  |
++------------+---------+-----------+------------+
+|          1 | Juan    | Rulfo     | 1979-05-05 |
+|          5 | Adriana | Gonzales  | 1999-07-12 |
+|          7 | paco    | Toño      | 1999-03-03 |
+|          8 | Ale     | Carmona   | 2020-02-02 |
+|          9 | Ale     | Carmona   | 2020-02-02 |
++------------+---------+-----------+------------+
+5 rows in set (0.0004 sec)
+ MySQL  localhost:3306 ssl  t2  ★  SQL > rollback;
+Query OK, 0 rows affected (0.0062 sec)
+ MySQL  localhost:3306 ssl  t2  SQL > select * from cliente;
++------------+---------+-----------+------------+
+| id_cliente | nombre  | apellidos | fecha_nac  |
++------------+---------+-----------+------------+
+|          1 | Juan    | Rulfo     | 1979-05-05 |
+|          5 | Adriana | Gonzales  | 1999-07-12 |
+|          7 | paco    | Toño      | 1999-03-03 |
+|          8 | Ale     | Carmona   | 2020-02-02 |
++------------+---------+-----------+------------+
+4 rows in set (0.0006 sec)
+ MySQL  localhost:3306 ssl  t2  SQL >
